@@ -45,7 +45,7 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
   drawRandomStars(starGlowIntensity, otherValue);
 
   // Draw a heart syncing with vocal value of the music
-  drawGlowingHeart(400, 280, vocalValue, vocalValue + 1, 5);
+  drawGlowingHeart(390, 280, vocalValue, vocalValue + 1, 5);
   drawGlowingHeart(700, 360, vocalValue, vocalValue + 1, 5);
 
   // Draw dust effect from the sides
@@ -65,7 +65,7 @@ function drawRandomStars(glowIntensity, radius) {
 // Draw a single glowing star
 function drawGlowingStar(x, y, radius, intensity) {
   let starColor = color(255, 255, 224); // Bright yellow
-  let glowColor = color(173, 216, 230); // Bright yellowish-white
+  let glowColor = color(183, 226, 210); // Bright yellowish-white
   let numberOfPointers = 5; // number of pointers for the star
   
   // Access the 2D canvas context
