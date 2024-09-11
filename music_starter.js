@@ -1,9 +1,13 @@
 // global parameters
-let bgImage;
-let starPositions = [];
-let numberOfStarts = 20;
-let starGlowIntensity = 5;
-let particles = [];
+let bgImage;  // Background image
+let starPositions = [];  // Star positions
+let numberOfStarts = 20; // Numnber of stars
+let starGlowIntensity = 5; // Star glowing intensity
+let particles = []; // Array to store dust particles
+let spiralAngle = 0; // Spiral angle
+let numSpirals = 100; // Number of spiral arms
+let spiralAngleStep = 10;   // Angle between each point on the spiral
+let spiralRadiusStep = 1;   // Radius increment for each point, start value
 
 // Set backgound image, this is get called by system_runner
 function setBackgroundImage() {
@@ -34,7 +38,7 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
   // Get projected values of the music parts into a variable
   vocalValue = map(vocal, 0, 100, 1, 100);
   drumValue = map(drum, 0, 80, 1, 5);
-  bassValue = map(bass, 0, 100, 1, 50);
+  bassValue = map(bass, 0, 100, 0.5, 1);
   otherValue = map(other, 0, 100, 0.5, 15);
 
   // Draw starts at the top which get sized changed based on the otherValue of the music
@@ -46,6 +50,9 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
 
   // Draw dust effect from the sides
   drawDust(drumValue);
+
+  // Draw spiral effect
+  drawSpiral(1050, 250, bassValue);
 }
 
 // Draw random number of glowing stars
@@ -204,5 +211,36 @@ function generateParticles(size) {
     let y = random(height);
     let silver = color(192, 192, 192, 150); // Silver color
     particles.push(new Particle(x, y, silver, size));
+  }
+}
+
+// Draw a spiral effect
+function drawSpiral(xPosition, yPosition, spiralRadiusStep) {
+
+  // Move the origin to the center of the canvas
+  translate(xPosition, yPosition);
+    
+  // Rotate the entire spiral slowly
+  rotate(spiralAngle);
+  spiralAngle += 0.05;  // Rotation speed
+
+  // Draw the spiral
+  for (let i = 0; i < numSpirals; i++) {
+    let currentAngle = i * spiralAngleStep;
+    let radius = i * spiralRadiusStep;
+
+    let x = cos(radians(currentAngle)) * radius;
+    let y = sin(radians(currentAngle)) * radius;
+
+    // Color combinations for each arm of the spiral
+    let r = map(sin(i * 0.1 + frameCount * 0.05), -1, 1, 100, 255);
+    let g = map(sin(i * 0.1 + frameCount * 0.03), -1, 1, 100, 255);
+    let b = map(sin(i * 0.1 + frameCount * 0.07), -1, 1, 100, 255);
+
+    stroke(r, g, b);
+    strokeWeight(2);
+
+    // Draw the points of the spiral
+    ellipse(x, y, 10, 10);
   }
 }
