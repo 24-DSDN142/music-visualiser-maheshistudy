@@ -5,7 +5,7 @@ let numberOfStarts = 20; // Numnber of stars
 let starGlowIntensity = 5; // Star glowing intensity
 let particles = []; // Array to store dust particles
 let spiralAngle = 0; // Spiral angle
-let numSpirals = 100; // Number of spiral arms
+let numSpirals = 130; // Number of spiral arms
 let spiralAngleStep = 10;   // Angle between each point on the spiral
 let spiralRadiusStep = 1;   // Radius increment for each point, start value
 
@@ -39,7 +39,7 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
   vocalValue = map(vocal, 0, 100, 1, 100);
   drumValue = map(drum, 0, 80, 1, 5);
   bassValue = map(bass, 0, 100, 0.5, 1);
-  otherValue = map(other, 0, 100, 0.5, 15);
+  otherValue = map(other, 0, 100, 0.5, 18);
 
   // Draw starts at the top which get sized changed based on the otherValue of the music
   drawRandomStars(starGlowIntensity, otherValue);
