@@ -18,7 +18,7 @@ function setBackgroundImage() {
 function setStarPositions() {
   for (let i = 0; i < numberOfStarts; i++) {
     let x = random(width); // Random x position across the canvas width
-    let y = random(10, 10 + 50); // Random y position near the top
+    let y = random(20, 10 + 50); // Random y position near the top
     starPositions.push({x: x, y: y}); // Store the position in a global array
   }
 }
