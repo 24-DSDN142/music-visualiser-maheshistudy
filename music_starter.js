@@ -3,6 +3,7 @@ let bgImage;
 let starPositions = [];
 let numberOfStarts = 20;
 let starGlowIntensity = 5;
+let particles = [];
 
 // Set backgound image, this is get called by system_runner
 function setBackgroundImage() {
@@ -32,7 +33,7 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
   
   // Get projected values of the music parts into a variable
   vocalValue = map(vocal, 0, 100, 1, 100);
-  drumValue = map(drum, 0, 100, 1, 50);
+  drumValue = map(drum, 0, 80, 1, 5);
   bassValue = map(bass, 0, 100, 1, 50);
   otherValue = map(other, 0, 100, 0.5, 15);
 
@@ -42,6 +43,9 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
   // Draw a heart syncing with vocal value of the music
   drawGlowingHeart(400, 280, vocalValue, vocalValue + 1, 5);
   drawGlowingHeart(700, 360, vocalValue, vocalValue + 1, 5);
+
+  // Draw dust effect from the sides
+  drawDust(drumValue);
 }
 
 // Draw random number of glowing stars
@@ -130,5 +134,75 @@ function drawHeartGlow(x, y, size, blur) {
     let alpha = map(i, size, 0, 0, 150); // Adjust alpha to create a glowing effect
     fill(255, 0, 0, alpha); // Red color with decreasing alpha
     ellipse(x, y, i * 2, i * 2);
+  }
+}
+
+
+// Draw dust from the sides
+
+function drawDust(size) {
+  // Generate particles from the left side (gold) and right side (silver)
+  generateParticles(size);
+
+  // Update and display all particles
+  for (let i = particles.length - 1; i >= 0; i--) {
+    particles[i].update();
+    particles[i].show();
+    if (particles[i].isDead()) {
+      particles.splice(i, 1); // Remove dead particles
+    }
+  }
+}
+
+// Particle class definition for dust generation
+class Particle {
+  constructor(x, y, col, size) {
+    this.pos = createVector(x, y);
+    this.vel = createVector(random(-1, 1), random(-2, -4));
+    this.acc = createVector(0, 0);
+    this.size = size;
+    this.lifespan = 255;
+    this.color = col;
+  }
+
+  applyForce(force) {
+    this.acc.add(force);
+  }
+
+  update() {
+    this.vel.add(this.acc);
+    this.pos.add(this.vel);
+    this.acc.mult(0);
+    this.size *= 0.97; // Shrink the particles over time
+    this.lifespan -= 4; // Particle fading effect
+  }
+
+  show() {
+    noStroke();
+    fill(red(this.color), green(this.color), blue(this.color), this.lifespan);
+    ellipse(this.pos.x, this.pos.y, this.size);
+  }
+
+  isDead() {
+    return this.lifespan < 0 || this.size < 1;
+  }
+}
+
+// Generate dust from the sides
+function generateParticles(size) {
+  // Generate golden particles from the left side
+  for (let i = 0; i < 2; i++) {
+    let x = random(0, 50); // Start near the left edge
+    let y = random(height);
+    let gold = color(255, 223, 0, 150); // Gold color
+    particles.push(new Particle(x, y, gold, size));
+  }
+
+  // Generate silver particles from the right side
+  for (let i = 0; i < 2; i++) {
+    let x = random(width - 50, width); // Start near the right edge
+    let y = random(height);
+    let silver = color(192, 192, 192, 150); // Silver color
+    particles.push(new Particle(x, y, silver, size));
   }
 }
