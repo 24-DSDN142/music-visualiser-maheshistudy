@@ -106,6 +106,10 @@ function setup() {
       volumes[i] = Taira.smoothen(volumes[i], Taira.ALGORITHMS.GAUSSIAN, 10, radius, true)
     }
   }
+
+  // call custom setting up methods, implemented in music_starter
+  setBackgroundImage();
+  setStarPositions();
 }
 
 function switchRunMode() {
