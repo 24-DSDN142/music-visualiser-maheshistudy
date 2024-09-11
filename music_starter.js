@@ -31,13 +31,17 @@ function draw_one_frame(words, vocal, drum, bass, other, counter) {
   image(bgImage, 0, 0);
   
   // Get projected values of the music parts into a variable
-  vocalValue = map(vocal, 0, 100, 1, 50);
+  vocalValue = map(vocal, 0, 100, 1, 100);
   drumValue = map(drum, 0, 100, 1, 50);
   bassValue = map(bass, 0, 100, 1, 50);
   otherValue = map(other, 0, 100, 0.5, 15);
 
-  // draw starts at the top which get sized changed based on the otherValue of the music
+  // Draw starts at the top which get sized changed based on the otherValue of the music
   drawRandomStars(starGlowIntensity, otherValue);
+
+  // Draw a heart syncing with vocal value of the music
+  drawGlowingHeart(400, 280, vocalValue, vocalValue + 1, 5);
+  drawGlowingHeart(700, 360, vocalValue, vocalValue + 1, 5);
 }
 
 // Draw random number of glowing stars
@@ -96,4 +100,35 @@ function drawStar(x, y, radius1, radius2, npoints) {
     vertex(sx, sy);
   }
   endShape(CLOSE);
+}
+
+// Draw glowing hearts
+function drawGlowingHeart(x, y, heartSize, glowSize, blurValue) {
+  drawHeart(x, y, heartSize);
+  drawHeartGlow(x,y, glowSize, blurValue);
+}
+
+// Draw the heart shape
+function drawHeart(x, y, size) {
+  fill(255, 0, 0); // Red color for the heart
+  stroke(255, 0, 0); // Red border for the heart shape
+  strokeWeight(3);
+  
+  beginShape();
+  vertex(x, y);  
+  // Right side of the heart
+  bezierVertex(x + size / 2, y - size / 2, x + size, y + size / 4, x, y + size);  
+  // Left side of the heart
+  bezierVertex(x - size, y + size / 4, x - size / 2, y - size / 2, x, y);  
+  endShape(CLOSE);
+}
+
+// Draw the glowing effect to the heart
+function drawHeartGlow(x, y, size, blur) {
+  noStroke();
+  for (let i = size; i > 0; i -= blur) {
+    let alpha = map(i, size, 0, 0, 150); // Adjust alpha to create a glowing effect
+    fill(255, 0, 0, alpha); // Red color with decreasing alpha
+    ellipse(x, y, i * 2, i * 2);
+  }
 }
