@@ -1,9 +1,15 @@
-// global parameters
+// Background parameters
 let bgImage;  // Background image
+
+// Star related parameters
 let starPositions = [];  // Star positions
 let numberOfStarts = 20; // Numnber of stars
 let starGlowIntensity = 5; // Star glowing intensity
+
+// Dust effect related parameters
 let particles = []; // Array to store dust particles
+
+// Spirall effect parameters
 let spiralAngle = 0; // Spiral angle
 let numSpirals = 130; // Number of spiral arms
 let spiralAngleStep = 10;   // Angle between each point on the spiral
@@ -23,7 +29,7 @@ function setStarPositions() {
   }
 }
 
-// vocal, drum, bass, and other are volumes ranging from 0 to 100
+// Main function, vocal, drum, bass, and other are volumes ranging from 0 to 100
 function draw_one_frame(words, vocal, drum, bass, other, counter) {
   background(0)
   textFont('Verdana'); // please use CSS safe fonts
@@ -146,7 +152,6 @@ function drawHeartGlow(x, y, size, blur) {
 
 
 // Draw dust from the sides
-
 function drawDust(size) {
   // Generate particles from the left side (gold) and right side (silver)
   generateParticles(size);
@@ -213,6 +218,7 @@ function generateParticles(size) {
     particles.push(new Particle(x, y, silver, size));
   }
 }
+
 
 // Draw a spiral effect
 function drawSpiral(xPosition, yPosition, spiralRadiusStep) {
